@@ -22,7 +22,7 @@ Une application Laravel simple et puissante qui permet de :
 
 ## 🛠️ Technologies utilisées
 
-- [Laravel 11](https://laravel.com/)
+- [Laravel 12](https://laravel.com/)
 - [Livewire 3](https://livewire.laravel.com/)
 - [Bootstrap 5](https://getbootstrap.com/)
 - [PHP WHOIS library](https://github.com/io-developer/php-whois)
