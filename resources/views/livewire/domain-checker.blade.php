@@ -21,12 +21,20 @@
                 ⚠️ {{ $errorMessage }}
             </div>
             @endif
-            @if($searchedDomain && $errorMessage === null && $availability !== null)
-            <div class="alert {{ $availability ? 'alert-success' : 'alert-danger' }}">
-                <strong>{{ $searchedDomain }}</strong> :
-                {{ $availability ? '✅ Disponible' : '❌ Déjà pris' }}
-            </div>
+          @if($searchedDomain && $errorMessage === null && $availability !== null)
+    <div class="alert {{ $availability['available'] ? 'alert-success' : 'alert-danger' }}">
+        <strong>{{ $searchedDomain }}</strong> :
+        @if($availability['available'])
+            ✅ Disponible
+        @else
+            ❌ Déjà pris
+            @if($availability['registered_at'])
+                (enregistré en {{ date('Y', $availability['registered_at']) }})
             @endif
+        @endif
+    </div>
+@endif
+
 
 
             @if($suggestions)

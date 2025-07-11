@@ -26,13 +26,28 @@ class DomainCheckerService
      public function checkDomain($domain)
     {
         try {
-        return $this->whois->loadDomainInfo($domain) === null;
+            $info = $this->whois->loadDomainInfo($domain);
+
+        if ($info === null) {
+            return [
+                'available' => true,
+                'registered_at' => null
+            ];
+        }
+
+        return [
+            'available' => false,
+            'registered_at' => $info->getCreationDate() // retourne un timestamp
+        ];
+        // return $this->whois->loadDomainInfo($domain) === null;
     } catch (WhoisException $e) {
         // Exception liée au WHOIS
-        throw new \Exception("Erreur WHOIS : domaine non pris en charge ou indisponible.");
+       throw new \Exception("Cette extension de domaine n'est pas prise en charge. Veuillez essayer avec une autre comme .com, .net, .org, etc.");
+
     } catch (\Throwable $e) {
         // Toutes autres exceptions (ex : erreur réseau, mauvais format, etc.)
-        throw new \Exception("Erreur lors de la vérification du domaine.");
+       throw new \Exception("Problème technique lors de la vérification. Veuillez réessayer dans quelques instants ou changer de domaine.");
+
     }
         // // On crée une clé unique pour ce domaine
         // $cacheKey = 'domain_check_' . $domain;
@@ -80,7 +95,7 @@ class DomainCheckerService
     public function checkAll($name, $excludedExt = null)
     {
         $results = [];
-       $extensions = Extension::limit(5)->get();
+       $extensions = Extension::limit(10)->get();
       foreach ($extensions as $ext) {
         if ($excludedExt && strtolower($ext->extension) === strtolower($excludedExt)) {
             continue; // Ignore l'extension déjà saisie

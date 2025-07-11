@@ -9,7 +9,7 @@ class DomainChecker extends Component
 {
     public $name;
     public $searchedDomain;
-    public $availability;
+    public $availability = null; 
     public $suggestions = [];
     public $errorMessage;
 
